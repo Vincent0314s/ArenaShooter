@@ -22,3 +22,11 @@ MonoBehaviour:
     enumVariable: []
   - name: AIOwner
     enumVariable: []
+  - name: EnemyType
+    enumVariable:
+    - Basic
+  - name: Element
+    enumVariable:
+    - Fire
+    - Ice
+    - Lightning

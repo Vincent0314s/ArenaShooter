@@ -15,8 +15,8 @@ public class ObjectPoolGE_Single<T> : MonoBehaviour,IObjectPoolGE<T> where T : M
     public T prefab;
     public int poolSize;
 
-    private List<T> m_freeList;
-    private List<T> m_usedList;
+    protected List<T> m_freeList;
+    protected List<T> m_usedList;
 
     public void InitPool_ObjectDeactived()
     {

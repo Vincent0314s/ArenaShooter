@@ -15,3 +15,15 @@ public enum AIOwner
 {
 
 }
+public enum EnemyType 
+{
+	Basic,
+
+}
+public enum Element 
+{
+	Fire,
+	Ice,
+	Lightning,
+
+}
