@@ -69,7 +69,6 @@ public class Unit_Ally_Ranged : Unit_Ally
         currentProjectile.gameObject.SetActive(true);
         currentProjectile.gameObject.transform.position = launchPoint.position;
         currentProjectile.SetTarget(firstEnemy);
-        this.Log(firstEnemy);
     }
 
     protected void RemoveEnemyFromRange() {

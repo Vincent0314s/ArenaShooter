@@ -21,7 +21,7 @@ public class DebuffSO : ScriptableObject
     {
         public int level;
         public float slowAmount;
-
+        public float duration;
         //Visual Feedback
         public Color color;
     }
@@ -32,10 +32,12 @@ public class DebuffSO : ScriptableObject
         public int level;
         public float shockTimer;
         public float shockInterval;
-
+        public float duration;
         //Visual Feedback
         public Color color;
     }
 
     public FireDebuff[] fireDebuffs;
+    public IceDebuff[] iceDebuffs;
+    public LightningDebuff[] lightningDebuffs;
 }

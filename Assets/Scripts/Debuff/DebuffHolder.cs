@@ -5,6 +5,8 @@ using UnityEngine;
 public class DebuffHolder : MonoBehaviour
 {
     private Unit_Base unit;
+    private MeshRenderer render;
+
     private const int MAXSTATELEVEL = 3;
     [SerializeField] DebuffSO debuffConfig;
 
@@ -20,6 +22,7 @@ public class DebuffHolder : MonoBehaviour
     private void Awake()
     {
         unit = GetComponent<Unit_Base>();
+        render = GetComponentInChildren<MeshRenderer>();
     }
 
     public void AddDebuff(Element _element) {
@@ -31,7 +34,8 @@ public class DebuffHolder : MonoBehaviour
         {
             StackDebuff(_element);
         }
-        else { 
+        else {
+            Debug.Log("Multiply Debuff");
             //Multiply Debuff
         }
            
@@ -68,17 +72,44 @@ public class DebuffHolder : MonoBehaviour
                 if (!IsStateReachMaxium(ref fire_StateLevel)) { 
                     fire_StateLevel += 1;
                     mainDuration = debuffConfig.fireDebuffs[fire_StateLevel - 1].duration;
+                    render.sharedMaterial.color = debuffConfig.fireDebuffs[fire_StateLevel - 1].color;
                     currentDuration = mainDuration;
                 }
-                else { 
+                else {
+                    render.sharedMaterial.color = Color.white;
+                    fire_StateLevel = 0;
                     //Ignite Debuff
                 }
                 break;
             case Element.Ice:
-                AddStateLevel(ref Ice_StateLevel);
+                if (!IsStateReachMaxium(ref Ice_StateLevel))
+                {
+                    Ice_StateLevel += 1;
+                    mainDuration = debuffConfig.iceDebuffs[Ice_StateLevel - 1].duration;
+                    render.sharedMaterial.color = debuffConfig.iceDebuffs[Ice_StateLevel - 1].color;
+                    currentDuration = mainDuration;
+                }
+                else
+                {
+                    render.sharedMaterial.color = Color.white;
+                    Ice_StateLevel = 0;
+                    //Ignite Debuff
+                }
                 break;
             case Element.Lightning:
-                AddStateLevel(ref Lightning_StateLevel);
+                if (!IsStateReachMaxium(ref Lightning_StateLevel))
+                {
+                    Lightning_StateLevel += 1;
+                    mainDuration = debuffConfig.lightningDebuffs[Lightning_StateLevel - 1].duration;
+                    render.sharedMaterial.color = debuffConfig.lightningDebuffs[Lightning_StateLevel - 1].color;
+                    currentDuration = mainDuration;
+                }
+                else
+                {
+                    render.sharedMaterial.color = Color.white;
+                    Lightning_StateLevel = 0;
+                    //Ignite Debuff
+                }
                 break;
         }
     }
