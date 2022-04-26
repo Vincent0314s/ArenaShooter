@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IHPChange 
 {
-    public void GetDamage(float _amount);
+    public void GetDamageByAmount(float _amount);
     public void GetHeal(float _amount);
 }

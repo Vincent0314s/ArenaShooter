@@ -17,6 +17,7 @@ public class Unit_Base : MonoBehaviour,IHPChange
     protected float currentHP;
     public float maxMP = 50f;
     protected float currentMP;
+    public float movingSpeed { get; private set; }
 
     private Image hpBar;
     private Image mpBar;
@@ -27,7 +28,6 @@ public class Unit_Base : MonoBehaviour,IHPChange
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        
     }
 
     protected virtual void Start()
@@ -38,6 +38,9 @@ public class Unit_Base : MonoBehaviour,IHPChange
     protected virtual void Init_Settings() {
         currentHP = maxHP;
         currentMP = maxMP;
+
+        movingSpeed = agent.speed;
+
         if (hasHPBar) 
         {
             hpBar = transform.Find("UI_World").GetChild(0).GetComponent<Image>();
@@ -89,11 +92,22 @@ public class Unit_Base : MonoBehaviour,IHPChange
         debuffBar.fillAmount = MathCalculation.NormalizeValues(_current, _max);
     }
 
-    public void GetDamage(float _amount) {
+    public void GetDamageByAmount(float _amount) {
         currentHP -= _amount;
         UpdateHPBar();
 
         if (currentHP <= 0) {
+            isDead = true;
+        }
+    }
+
+    public void GetDamageByPercent(float _percentage) {
+        float percenAmount = (currentHP * _percentage);
+        currentHP -= percenAmount;
+        UpdateHPBar();
+
+        if (currentHP <= 0)
+        {
             isDead = true;
         }
     }
@@ -104,5 +118,13 @@ public class Unit_Base : MonoBehaviour,IHPChange
             currentHP += _amount;
 
         UpdateHPBar();
+    }
+
+    public void SetSpeed(float _newSpeed) {
+        agent.speed -= _newSpeed;
+    }
+
+    public void ResetSpeed() {
+        agent.speed = movingSpeed;
     }
 }

@@ -15,18 +15,18 @@ MonoBehaviour:
   fireDebuffs:
   - level: 0
     dotAmount: 1
-    dotInterval: 2
-    duration: 2
+    interval: 0.5
+    duration: 3
     color: {r: 0.9811321, g: 0.45817015, b: 0.45817015, a: 1}
   - level: 1
     dotAmount: 2
-    dotInterval: 1
-    duration: 2
+    interval: 0.25
+    duration: 3
     color: {r: 1, g: 0.19339621, b: 0.19339621, a: 1}
   - level: 2
     dotAmount: 3
-    dotInterval: 0.75
-    duration: 2
+    interval: 0.1
+    duration: 3
     color: {r: 1, g: 0.42660633, b: 0, a: 1}
   iceDebuffs:
   - level: 0

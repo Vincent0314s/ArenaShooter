@@ -30,3 +30,10 @@ MonoBehaviour:
     - Fire
     - Ice
     - Lightning
+  - name: ExplosionLevel
+    enumVariable:
+    - Small
+    - Medium
+    - Large
+    - ExtraLarge
+    - FullAmount

@@ -27,3 +27,12 @@ public enum Element
 	Lightning,
 
 }
+public enum ExplosionLevel 
+{
+	Small,
+	Medium,
+	Large,
+	ExtraLarge,
+	FullAmount,
+
+}

@@ -125,12 +125,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasHPBar: 0
   hasMPBar: 0
+  hasDebuffBar: 0
   maxHP: 100
   maxMP: 50
   path: 0
+  selectedCircle: {fileID: 0}
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   attackRange: 10
-  attackInterval: 1
+  attackInterval: 2
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
