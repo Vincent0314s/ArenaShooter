@@ -19,14 +19,22 @@ public class ExtraDebuffSO : ScriptableObject
 
     public ExplosionDebuff[] expDebuffs;
 
+    [SerializeField]private float freezeTimer = 3f;
+
     public float GetExplosionPercentage(ExplosionLevel _level) {
         foreach (var item in expDebuffs)
         {
             if (item.level == _level) {
-                Debug.Log(item.level + " " + item.GetPercentage());
                 return item.GetPercentage();
             }
         }
         return 0;
+    }
+
+    public IEnumerator FreezeCoroutine(Action _before,Action _after) {
+        _before?.Invoke();
+        var waitTImer = new WaitForSeconds(freezeTimer);
+        yield return waitTImer;
+        _after?.Invoke();
     }
 }

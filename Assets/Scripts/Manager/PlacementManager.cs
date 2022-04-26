@@ -6,9 +6,9 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public class PlaceObject {
     public enum Objecttype { 
-        Unit,
-        cube,
-        Sphere
+        Unit_Fire,
+        Unit_Ice,
+        Unit_Lightning
     }
 
     public Objecttype type;

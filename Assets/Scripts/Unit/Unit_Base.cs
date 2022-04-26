@@ -124,6 +124,10 @@ public class Unit_Base : MonoBehaviour,IHPChange
         agent.speed -= _newSpeed;
     }
 
+    public void FreezeSpeed() {
+        agent.speed = 0;
+    }
+
     public void ResetSpeed() {
         agent.speed = movingSpeed;
     }

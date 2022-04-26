@@ -11,11 +11,13 @@ public class UI_ButtonCollection : MonoBehaviour
     {
         UnitSelections[0].OnClick.AddListener(() => m_placementManager.CreatePO(0));
         UnitSelections[1].OnClick.AddListener(() => m_placementManager.CreatePO(1));
+        UnitSelections[2].OnClick.AddListener(() => m_placementManager.CreatePO(2));
     }
 
     private void OnDisable()
     {
         UnitSelections[0].OnClick.RemoveAllListeners();
         UnitSelections[1].OnClick.RemoveAllListeners();
+        UnitSelections[2].OnClick.RemoveAllListeners();
     }
 }

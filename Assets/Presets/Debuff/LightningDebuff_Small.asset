@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f08e5170907abc44a9f17750498d9f9, type: 3}
   m_Name: LightningDebuff_Small
   m_EditorClassIdentifier: 
-  lightningDebuffs: []
+  lightningDebuffs:
+  - damage: 30
+    interval: 0.5
+    duration: 2
+    color: {r: 1, g: 0.9831054, b: 0.4198113, a: 1}
+  - damage: 40
+    interval: 1
+    duration: 3
+    color: {r: 0.9719206, g: 0.9811321, b: 0.023139905, a: 1}
+  - damage: 50
+    interval: 1.5
+    duration: 4.5
+    color: {r: 0.6132076, g: 0.5848905, b: 0.118592024, a: 1}

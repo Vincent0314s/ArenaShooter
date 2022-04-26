@@ -8,15 +8,17 @@ public class DebuffHolder : MonoBehaviour
     private MeshRenderer render;
 
     private const int MAXSTATELEVEL = 3;
+    [Header("DebuffSO")]
     [SerializeField] FireDebuffSO SO_fireDebuff;
     [SerializeField] IceDebuffSO SO_IceDebuff;
     [SerializeField] LightningDebuffSO SO_LightningDebuff;
     [SerializeField] ExtraDebuffSO SO_extraDebuff;
 
-
+    [Header("State Settings")]
     [SerializeField, Range(0, 3)] private int fire_StateLevel;
     [SerializeField, Range(0, 3)] private int Ice_StateLevel;
     [SerializeField, Range(0, 3)] private int Lightning_StateLevel;
+    private bool isFreeze;
 
     [Space()]
     public Element firstDebuff;
@@ -36,6 +38,7 @@ public class DebuffHolder : MonoBehaviour
         //debuffConfig.Init();
         SO_fireDebuff.Init();
         SO_IceDebuff.Init();
+        SO_LightningDebuff.Init();
     }
 
 
@@ -99,7 +102,7 @@ public class DebuffHolder : MonoBehaviour
                 }
                 break;
             case Element.Ice:
-                if (!IsStateReachMaxium(ref Ice_StateLevel))
+                if (!IsStateReachMaxium(ref Ice_StateLevel) && !isFreeze)
                 {
                     AddStateLevel(ref Ice_StateLevel);
                     mainDuration = SO_IceDebuff.iceDebuffs[GetIceDebuffLevel()].duration;
@@ -109,6 +112,8 @@ public class DebuffHolder : MonoBehaviour
                 }
                 else
                 {
+                    Freeze();
+                    //ResetDebuff();
                     render.sharedMaterial.color = Color.white;
                     Ice_StateLevel = 0;
                     //Ignite Debuff
@@ -119,6 +124,7 @@ public class DebuffHolder : MonoBehaviour
                 {
                     AddStateLevel(ref Lightning_StateLevel);
                     mainDuration = SO_LightningDebuff.lightningDebuffs[GetLightningDebuffLevel()].duration;
+                    Shocking();
                     render.sharedMaterial.color = SO_LightningDebuff.lightningDebuffs[GetLightningDebuffLevel()].color;
                     currentDuration = mainDuration;
                 }
@@ -154,6 +160,34 @@ public class DebuffHolder : MonoBehaviour
                         .SlowSpeedCoroutine(() => unit.SetSpeed(speedAmount),() => unit.ResetSpeed()));
     }
 
+    private void Shocking() {
+        var damageAmount = SO_fireDebuff.fireDebuffs[GetLightningDebuffLevel()].damage;
+        if (stackCoroutine != null)
+        {
+            StopCoroutine(stackCoroutine);
+        }
+
+        stackCoroutine = StartCoroutine(SO_LightningDebuff.lightningDebuffs[GetLightningDebuffLevel()]
+                        .LightningShockCoroutine(() => 
+                        {
+                            unit.FreezeSpeed();
+                            unit.GetDamageByAmount(damageAmount);
+                        }, () => unit.ResetSpeed()));
+    }
+
+    private void Freeze() {
+        //Disable behaviour
+        StartCoroutine(SO_extraDebuff.FreezeCoroutine(() =>
+        {
+            isFreeze = true;
+            unit.FreezeSpeed();
+        }, () => 
+        {
+            isFreeze = false;
+            unit.ResetSpeed(); 
+        }));
+    }
+
     private void Explosion(ExplosionLevel _level) {
         unit.GetDamageByPercent(SO_extraDebuff.GetExplosionPercentage(_level));
     }
@@ -162,6 +196,7 @@ public class DebuffHolder : MonoBehaviour
     {
         StopCoroutine(stackCoroutine);
         stackCoroutine = null;
+
         SO_fireDebuff.Reset();
         currentDuration = 0;
         mainDuration = 0;

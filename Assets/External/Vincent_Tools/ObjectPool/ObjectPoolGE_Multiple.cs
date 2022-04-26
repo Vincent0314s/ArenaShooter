@@ -9,9 +9,9 @@ public class PoolData<T>
     public T prefab;
     public int poolSize;
 
-    [HideInInspector]
+    //[HideInInspector]
     public List<T> m_freeList;
-    [HideInInspector]
+    //[HideInInspector]
     public List<T> m_usedList;
 
     public void InitListSize() {

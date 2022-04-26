@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95558a54562d0f4692cdddcf389bacf, type: 3}
   m_Name: Projectile_Lightning_Ally
   m_EditorClassIdentifier: 
-  element: 1
+  element: 2
   damage: 30
   speed: 2000
