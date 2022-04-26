@@ -56,7 +56,7 @@ public class Projectile : MonoBehaviour
         {
             Debug.Log("HitEnemy");
             other.GetComponent<IHPChange>().GetDamageByAmount(m_Projectile.damage);
-            other.GetComponent<DebuffHolder>().AddDebuff(m_Projectile.element);
+            other.GetComponent<IDebuff>().AddDebuff(m_Projectile.element);
             transform.position = Vector3.zero;
         }
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebuffHolder : MonoBehaviour
+public class DebuffHolder : MonoBehaviour,IDebuff
 {
     private Unit_Base unit;
     private MeshRenderer render;
@@ -18,12 +18,14 @@ public class DebuffHolder : MonoBehaviour
     [SerializeField, Range(0, 3)] private int fire_StateLevel;
     [SerializeField, Range(0, 3)] private int Ice_StateLevel;
     [SerializeField, Range(0, 3)] private int Lightning_StateLevel;
-    private bool isFreeze;
 
     [Space()]
-    public Element firstDebuff;
+    public List<Element> debuffsOnCharacter;
     private float mainDuration;
     private float currentDuration;
+
+    private bool isFreeze; 
+
 
     private Coroutine stackCoroutine;
 
@@ -35,7 +37,6 @@ public class DebuffHolder : MonoBehaviour
 
     private void Start()
     {
-        //debuffConfig.Init();
         SO_fireDebuff.Init();
         SO_IceDebuff.Init();
         SO_LightningDebuff.Init();
@@ -56,19 +57,24 @@ public class DebuffHolder : MonoBehaviour
     }
 
     public void AddDebuff(Element _element) {
-        if (WithoutDebuff()) {
-            firstDebuff = _element;
-        }
-
-        if (firstDebuff == _element)
+        if (WithoutDebuff())
         {
             StackDebuff(_element);
+            CheckFirstDebuffLayer(_element);
         }
         else {
-            Debug.Log("Multiply Debuff");
-            //Multiply Debuff
+            if (GetFirstDebuff() == _element)
+            {
+                StackDebuff(_element);
+            }
+            else
+            {
+                if (!CheckSecondDebuffLayer(_element)) {
+                    Debug.Log("Multiply Debuff");
+                }
+                //Multiply Debuff
+            }
         }
-           
     }
 
     private void AddStateLevel(ref int _state) {
@@ -77,11 +83,6 @@ public class DebuffHolder : MonoBehaviour
             _state += 1;
         }
     }
-
-    private bool IsStateReachMaxium(ref int _state) {
-        return _state >= MAXSTATELEVEL;
-    }
-
     private void StackDebuff(Element _element) {
         switch (_element)
         {
@@ -94,11 +95,11 @@ public class DebuffHolder : MonoBehaviour
                     currentDuration = mainDuration;
                 }
                 else {
-                    Explosion(ExplosionLevel.Large);
-                    ResetDebuff();
-                    render.sharedMaterial.color = Color.white;
-                    fire_StateLevel = 0;
                     //Ignite Debuff
+
+                    Explosion(ExplosionLevel.Large);
+                    RemoveDebuff();
+                    render.sharedMaterial.color = Color.white;
                 }
                 break;
             case Element.Ice:
@@ -112,11 +113,11 @@ public class DebuffHolder : MonoBehaviour
                 }
                 else
                 {
-                    Freeze();
-                    //ResetDebuff();
-                    render.sharedMaterial.color = Color.white;
-                    Ice_StateLevel = 0;
                     //Ignite Debuff
+
+                    Freeze();
+                    RemoveDebuff();
+                    render.sharedMaterial.color = Color.white;
                 }
                 break;
             case Element.Lightning:
@@ -130,15 +131,16 @@ public class DebuffHolder : MonoBehaviour
                 }
                 else
                 {
-                    render.sharedMaterial.color = Color.white;
-                    Lightning_StateLevel = 0;
                     //Ignite Debuff
+                    GenerateStaticElectricArea();
+                    RemoveDebuff();
+                    render.sharedMaterial.color = Color.white;
                 }
                 break;
         }
     }
 
-
+    #region Debuff Functionality
     private void Burning()
     {
         var damageAmount = SO_fireDebuff.fireDebuffs[GetFireDebuffLevel()].damage;
@@ -147,7 +149,7 @@ public class DebuffHolder : MonoBehaviour
         }
 
         stackCoroutine = StartCoroutine(SO_fireDebuff.fireDebuffs[GetFireDebuffLevel()]
-                        .FireDotDamageCoroutine(() => unit.GetDamageByAmount(damageAmount)));
+                        .ExecuteCoroutine(() => unit.GetDamageByAmount(damageAmount),() => fire_StateLevel = 0));
     }
 
     private void Icing() {
@@ -157,7 +159,11 @@ public class DebuffHolder : MonoBehaviour
         }
 
         stackCoroutine = StartCoroutine(SO_IceDebuff.iceDebuffs[GetIceDebuffLevel()]
-                        .SlowSpeedCoroutine(() => unit.SetSpeed(speedAmount),() => unit.ResetSpeed()));
+                        .ExecuteCoroutine(() => unit.SetSpeed(speedAmount),() =>
+                                                                                {
+                                                                                 unit.ResetSpeed();
+                                                                                    Ice_StateLevel = 0;
+                                                                                }));
     }
 
     private void Shocking() {
@@ -168,39 +174,95 @@ public class DebuffHolder : MonoBehaviour
         }
 
         stackCoroutine = StartCoroutine(SO_LightningDebuff.lightningDebuffs[GetLightningDebuffLevel()]
-                        .LightningShockCoroutine(() => 
+                        .ExecuteCoroutine(() =>
                         {
                             unit.FreezeSpeed();
                             unit.GetDamageByAmount(damageAmount);
-                        }, () => unit.ResetSpeed()));
+                        }, () =>
+                        {
+                            unit.ResetSpeed();
+                        }));
     }
 
-    private void Freeze() {
+
+    public void Freeze()
+    {
         //Disable behaviour
         StartCoroutine(SO_extraDebuff.FreezeCoroutine(() =>
         {
             isFreeze = true;
             unit.FreezeSpeed();
-        }, () => 
+        }, () =>
         {
             isFreeze = false;
-            unit.ResetSpeed(); 
+            unit.ResetSpeed();
         }));
     }
 
-    private void Explosion(ExplosionLevel _level) {
+    public void Explosion(ExplosionLevel _level)
+    {
         unit.GetDamageByPercent(SO_extraDebuff.GetExplosionPercentage(_level));
     }
 
-    private void ResetDebuff()
+    public void GenerateStaticElectricArea()
     {
-        StopCoroutine(stackCoroutine);
-        stackCoroutine = null;
+        Vector3 pos = new Vector3(transform.position.x, 0.5f, transform.position.z);
+        VisualEffectManager.CreateVisualEffect(VisualEffect.StaticElectricArea, pos, Quaternion.identity);
+    }
+    #endregion
+
+    #region Disable Debuff
+    public void RemoveDebuff()
+    {
+        if(stackCoroutine != null)
+            StopCoroutine(stackCoroutine);
 
         SO_fireDebuff.Reset();
+        fire_StateLevel = 0;
+        Ice_StateLevel = 0;
+        Lightning_StateLevel = 0;
+
         currentDuration = 0;
         mainDuration = 0;
     }
+    #endregion
+
+    #region Handle Debuff Layer
+    private void CheckFirstDebuffLayer(Element _element)
+    {
+        switch (_element)
+        {
+            case Element.Fire:
+            case Element.Ice:
+            case Element.Lightning:
+                if (!debuffsOnCharacter.Contains(_element))
+                    debuffsOnCharacter.Add(_element);
+                break;
+        }
+    }
+
+    private bool CheckSecondDebuffLayer(Element _element) {
+        switch (_element)
+        {
+            case Element.BlackLightning:
+                if (!debuffsOnCharacter.Contains(_element))
+                    debuffsOnCharacter.Add(_element);
+                return true;
+        }
+        return false;
+    }
+
+    private Element GetFirstDebuff() {
+        if (debuffsOnCharacter.Count > 0)
+            return debuffsOnCharacter[0];
+        return Element.Fire;
+    }
+    private Element GetSecondDebuff() {
+        if (debuffsOnCharacter.Count > 1)
+            return debuffsOnCharacter[1];
+        return Element.Fire;
+    }
+    #endregion
 
     #region RealStateLevel
     private int GetFireDebuffLevel() {
@@ -219,22 +281,13 @@ public class DebuffHolder : MonoBehaviour
     #endregion
 
     #region Condition
+    private bool IsStateReachMaxium(ref int _state)
+    {
+        return _state >= MAXSTATELEVEL;
+    }
+
     private bool WithoutDebuff() {
         return (fire_StateLevel == 0 && Ice_StateLevel == 0 && Lightning_StateLevel == 0);
-    }
-    private bool IsOnFire()
-    {
-        return (fire_StateLevel > 0 && Ice_StateLevel <= 0 && Lightning_StateLevel <= 0);
-    }
-
-    private bool IsOnIce()
-    {
-        return (Ice_StateLevel > 0 && fire_StateLevel <= 0 && Lightning_StateLevel <= 0);
-    }
-
-    private bool IsOnLightning()
-    {
-        return (Lightning_StateLevel > 0 && Ice_StateLevel <= 0 && fire_StateLevel <= 0);
     }
     #endregion
 }

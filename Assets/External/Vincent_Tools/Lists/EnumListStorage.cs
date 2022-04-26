@@ -1,6 +1,6 @@
 public enum VisualEffect 
 {
-	aSD,
+	StaticElectricArea,
 
 }
 public enum SoundEffect 
@@ -18,6 +18,7 @@ public enum AIOwner
 public enum EnemyType 
 {
 	Basic,
+	Advanced,
 
 }
 public enum Element 
@@ -25,6 +26,7 @@ public enum Element
 	Fire,
 	Ice,
 	Lightning,
+	BlackLightning,
 
 }
 public enum ExplosionLevel 

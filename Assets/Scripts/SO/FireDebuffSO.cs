@@ -30,16 +30,15 @@ public class FireDebuffSO : ScriptableObject
             currentTick = tick;
         }
 
-        public IEnumerator FireDotDamageCoroutine(Action _OnDamage)
+        public IEnumerator ExecuteCoroutine(Action _OnEffectStart, Action _OnReset)
         {
             while (currentTick > 0)
             {
-                Debug.Log("Bruning");
-                _OnDamage?.Invoke();
+                _OnEffectStart?.Invoke();
                 currentTick -= 1;
                 yield return seconds;
             }
-            Debug.Log("Reset");
+            _OnReset?.Invoke();
             Reset();
         }
     }

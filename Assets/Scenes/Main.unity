@@ -2051,6 +2051,7 @@ GameObject:
   m_Component:
   - component: {fileID: 500783934}
   - component: {fileID: 500783935}
+  - component: {fileID: 500783936}
   m_Layer: 0
   m_Name: _GameSystem
   m_TagString: Untagged
@@ -2085,9 +2086,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - enemyNumber: 1
-    spawnIntervalTimer: 1
+  - enemyPrefabs:
+    - type: 0
+      PF_Enemy: {fileID: 7355097716525656292, guid: 270244ad2594316459061a42153c4b1c, type: 3}
+      enemyNumber: 3
+      spawnIntervalTimer: 8
   currentWaveIndex: 0
+--- !u!114 &500783936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500783933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015c297580e17b84a959302dc572457e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SO_extraDebuff: {fileID: 11400000, guid: 15e848a035fc0694ba7ced00d4501009, type: 2}
 --- !u!1001 &521975075
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7760,9 +7777,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1720829689}
-  - component: {fileID: 1720829690}
   - component: {fileID: 1720829691}
   - component: {fileID: 1720829692}
+  - component: {fileID: 1720829690}
   m_Layer: 0
   m_Name: _GameAssetManager
   m_TagString: Untagged
@@ -7793,15 +7810,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1720829688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2816e0edea336d428061b14b26a3986, type: 3}
+  m_Script: {fileID: 11500000, guid: d6c4121199f094e56b43bc386378d2ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualEffects: []
+  visualEffects:
+  - effect: 0
+    effectObject: {fileID: 6576748428504387610, guid: c13cba6d5419dff4aa3626fb0d76a282, type: 3}
   soundEffects: []
   UI_SoundClipArray: []
-  enemyPrefabs:
-  - type: 0
-    prefab: {fileID: 7355097716525656292, guid: 270244ad2594316459061a42153c4b1c, type: 3}
 --- !u!114 &1720829691
 MonoBehaviour:
   m_ObjectHideFlags: 0

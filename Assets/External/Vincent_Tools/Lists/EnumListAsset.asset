@@ -15,7 +15,7 @@ MonoBehaviour:
   enumLists:
   - name: VisualEffect
     enumVariable:
-    - aSD
+    - StaticElectricArea
   - name: SoundEffect
     enumVariable: []
   - name: UI_SoundEffects
@@ -25,11 +25,13 @@ MonoBehaviour:
   - name: EnemyType
     enumVariable:
     - Basic
+    - Advanced
   - name: Element
     enumVariable:
     - Fire
     - Ice
     - Lightning
+    - BlackLightning
   - name: ExplosionLevel
     enumVariable:
     - Small

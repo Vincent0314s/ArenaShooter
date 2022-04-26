@@ -10,11 +10,7 @@ public class LightningDebuffSO : ScriptableObject
     public struct LightningDebuff
     {
         public float damage;
-        public float interval;
         public float duration;
-
-        private int tick => Mathf.RoundToInt(duration / interval);
-        private int currentTick;
 
         private WaitForSeconds seconds;
 
@@ -23,26 +19,14 @@ public class LightningDebuffSO : ScriptableObject
 
         public void Init()
         {
-            seconds = new WaitForSeconds(interval / 2);
-            currentTick = tick;
+            seconds = new WaitForSeconds(duration);
         }
 
-        public void Reset()
+        public IEnumerator ExecuteCoroutine(Action _OnEffectStart,Action _OnEffectReset)
         {
-            currentTick = tick;
-        }
-
-        public IEnumerator LightningShockCoroutine(Action _OnDamage,Action _OnReset)
-        {
-            while (currentTick > 0)
-            {
-                _OnDamage?.Invoke();
-                currentTick -= 1;
-                yield return seconds;
-                _OnReset?.Invoke();
-                yield return seconds;
-            }
-            Reset();
+            _OnEffectStart?.Invoke();
+            yield return seconds;
+            _OnEffectReset?.Invoke();
         }
     }
 
@@ -53,14 +37,6 @@ public class LightningDebuffSO : ScriptableObject
         for (int i = 0; i < lightningDebuffs.Length; i++)
         {
             lightningDebuffs[i].Init();
-        }
-    }
-
-    public void Reset()
-    {
-        for (int i = 0; i < lightningDebuffs.Length; i++)
-        {
-            lightningDebuffs[i].Reset();
         }
     }
 }

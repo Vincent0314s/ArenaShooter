@@ -21,11 +21,11 @@ public class IceDebuffSO : ScriptableObject
             seconds = new WaitForSeconds(duration);
         }
 
-        public IEnumerator SlowSpeedCoroutine(Action _OnSpeedSlow, Action _OnSpeedReset)
+        public IEnumerator ExecuteCoroutine(Action _OnEffectStart, Action _OnEffectReset)
         {
-            _OnSpeedSlow.Invoke();
+            _OnEffectStart.Invoke();
             yield return seconds;
-            _OnSpeedReset.Invoke();
+            _OnEffectReset.Invoke();
         }
     }
 
