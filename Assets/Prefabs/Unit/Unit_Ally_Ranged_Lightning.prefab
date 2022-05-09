@@ -127,12 +127,14 @@ MonoBehaviour:
   hasMPBar: 0
   hasDebuffBar: 0
   maxHP: 100
+  currentHP: 0
   maxMP: 50
+  isFreeze: 0
   path: 0
   selectedCircle: {fileID: 0}
   rangeColor: {r: 1, g: 1, b: 1, a: 1}
   attackRange: 10
-  attackInterval: 1.5
+  attackInterval: 2
   enemyMask:
     serializedVersion: 2
     m_Bits: 256

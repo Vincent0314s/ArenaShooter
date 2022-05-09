@@ -16,6 +16,9 @@ MonoBehaviour:
   - name: VisualEffect
     enumVariable:
     - StaticElectricArea
+    - Fire_Small
+    - Fire_Medium
+    - Fire_Large
   - name: SoundEffect
     enumVariable: []
   - name: UI_SoundEffects

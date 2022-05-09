@@ -11,30 +11,7 @@ public class IceDebuffSO : ScriptableObject
     {
         public float slowAmount;
         public float duration;
-        //Visual Feedback
-        private WaitForSeconds seconds;
-
-        //Visual Feedback
-        public Color color;
-
-        public void Init() {
-            seconds = new WaitForSeconds(duration);
-        }
-
-        public IEnumerator ExecuteCoroutine(Action _OnEffectStart, Action _OnEffectReset)
-        {
-            _OnEffectStart.Invoke();
-            yield return seconds;
-            _OnEffectReset.Invoke();
-        }
     }
 
     public IceDebuff[] iceDebuffs;
-
-    public void Init() {
-        for (int i = 0; i < iceDebuffs.Length; i++)
-        {
-            iceDebuffs[i].Init();
-        }
-    }
 }

@@ -13,15 +13,9 @@ MonoBehaviour:
   m_Name: FireDebuff_Small
   m_EditorClassIdentifier: 
   fireDebuffs:
-  - damage: 5
-    interval: 0.5
+  - damage: 30
     duration: 3
-    color: {r: 1, g: 0.5613208, b: 0.5613208, a: 1}
-  - damage: 10
-    interval: 0.5
-    duration: 3.5
-    color: {r: 1, g: 0, b: 0, a: 1}
-  - damage: 15
-    interval: 0.5
-    duration: 4
-    color: {r: 1, g: 0.60727984, b: 0, a: 1}
+  - damage: 39
+    duration: 3
+  - damage: 48
+    duration: 3

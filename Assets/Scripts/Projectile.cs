@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private ProjectileSO m_Projectile;
+    [SerializeField] private DamageSO m_Projectile;
     private Rigidbody rb;
 
     private bool canShoot;

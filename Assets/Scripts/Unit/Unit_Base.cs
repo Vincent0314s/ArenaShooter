@@ -5,6 +5,15 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using Utils;
 
+public struct CharacterData
+{
+    public float maxHP;
+    private float currentHP;
+    public float maxMP;
+    private float currentMP;
+
+}
+
 public class Unit_Base : MonoBehaviour,IHPChange
 {
     protected NavMeshAgent agent;
@@ -14,6 +23,7 @@ public class Unit_Base : MonoBehaviour,IHPChange
     [SerializeField] protected bool hasMPBar;
     [SerializeField] protected bool hasDebuffBar;
     public float maxHP = 100f; 
+    [SerializeField]
     protected float currentHP;
     public float maxMP = 50f;
     protected float currentMP;
@@ -21,9 +31,13 @@ public class Unit_Base : MonoBehaviour,IHPChange
 
     private Image hpBar;
     private Image mpBar;
-    private Image debuffBar;
 
     protected bool isDead;
+
+    [Space()]
+    public bool isFreeze;
+    public bool isOnBlueFire;
+    public bool isOnBlackLightning;
 
     protected virtual void Awake()
     {
@@ -52,12 +66,6 @@ public class Unit_Base : MonoBehaviour,IHPChange
             mpBar = transform.Find("UI_World").GetChild(1).GetComponent<Image>();
             mpBar.gameObject.SetActive(true);
             UpdateMPBar();
-        }
-        if (hasDebuffBar)
-        {
-            debuffBar = transform.Find("UI_World").GetChild(2).GetComponent<Image>();
-            debuffBar.gameObject.SetActive(true);
-            UpdateDebuffBar(0,0);
         }
     }
 
@@ -88,10 +96,6 @@ public class Unit_Base : MonoBehaviour,IHPChange
         mpBar.fillAmount = MathCalculation.NormalizeValues(currentMP,maxMP);
     }
 
-    public void UpdateDebuffBar(float _current, float _max) {
-        debuffBar.fillAmount = MathCalculation.NormalizeValues(_current, _max);
-    }
-
     public void GetDamageByAmount(float _amount) {
         currentHP -= _amount;
         UpdateHPBar();
@@ -120,15 +124,17 @@ public class Unit_Base : MonoBehaviour,IHPChange
         UpdateHPBar();
     }
 
-    public void SetSpeed(float _newSpeed) {
+    public void DecreaseMovingSpeed(float _newSpeed) {
         agent.speed -= _newSpeed;
     }
 
     public void FreezeSpeed() {
+        isFreeze = true;
         agent.speed = 0;
     }
 
-    public void ResetSpeed() {
+    public void ResetMovingSpeed() {
+        isFreeze = false;
         agent.speed = movingSpeed;
     }
 }

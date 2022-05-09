@@ -1,6 +1,9 @@
 public enum VisualEffect 
 {
 	StaticElectricArea,
+	Fire_Small,
+	Fire_Medium,
+	Fire_Large,
 
 }
 public enum SoundEffect 
