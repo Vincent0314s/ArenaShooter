@@ -20,7 +20,7 @@ public class ExtraDebuffSO : ScriptableObject
     public ExplosionDebuff[] expDebuffs;
 
     public float freezeTimer = 3f;
-
+    public float blueFireSlowAmount = 1.5f;
     public float GetExplosionPercentage(ExplosionLevel _level) {
         foreach (var item in expDebuffs)
         {

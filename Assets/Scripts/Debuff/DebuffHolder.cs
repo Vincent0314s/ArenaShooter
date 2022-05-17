@@ -21,13 +21,19 @@ public class DebuffHolder : MonoBehaviour,IDebuff
     [SerializeField, Range(0, 3)] private int fire_StateLevel;
     [SerializeField, Range(0, 3)] private int Ice_StateLevel;
     [SerializeField, Range(0, 3)] private int Lightning_StateLevel;
-    [SerializeField]private List<Element> debuffsOnCharacter;
+    [SerializeField] private List<Element> basicDebuff;
+    [SerializeField] private List<Element> persistentDebuff;
 
     //Other Declaration
     private Coroutine stackCoroutine;
     private Coroutine blackLightningCoroutine;
+    private IEnumerator effectCoroutine_01;
+    private IEnumerator effectCoroutine_02;
+
     private Action OnFireDebuffReset;
     private Action OnIceDebuffReset;
+    private Action OnBlueFireDebuffReset;
+    private Action OnPurpleFireDebuffReset;
 
     private void Awake()
     {
@@ -38,9 +44,11 @@ public class DebuffHolder : MonoBehaviour,IDebuff
     private void Start()
     {
         m_stateEffect = new StateEffectCollection();
-        debuffsOnCharacter = new List<Element>();
+        basicDebuff = new List<Element>();
         OnFireDebuffReset += ResetFireDebuff;
         OnIceDebuffReset += ResetIceDebuff;
+        OnBlueFireDebuffReset += ResetBlueFireDebuff;
+        OnPurpleFireDebuffReset += ResetPurpleFireDebuff;
     }
 
     void Update() {
@@ -53,9 +61,18 @@ public class DebuffHolder : MonoBehaviour,IDebuff
     {
         OnFireDebuffReset -= ResetFireDebuff;
         OnIceDebuffReset -= ResetIceDebuff;
+        OnBlueFireDebuffReset -= ResetBlueFireDebuff;
+        OnPurpleFireDebuffReset -= ResetPurpleFireDebuff;
     }
 
     public void AddDebuff(Element _element) {
+        //Handle persistent Debuff
+        StackPersistentDebuff(_element);
+
+        if (unit.HasSpecialDebuff())
+            return;
+
+        //Handle Basic Debuff
         if (WithoutDebuff())
         {
             StackFirstDebuff(_element);
@@ -68,11 +85,6 @@ public class DebuffHolder : MonoBehaviour,IDebuff
             }
             else
             {
-                if (!CheckSecondDebuffLayer(_element)) {
-                    Debug.Log("ADD?");
-                    //Trigger Second Layer Debuff
-                    StackSecondDebuff(_element);
-                }
                 CheckMultiplyDebuff(GetFirstDebuff(),_element);
             }
         }
@@ -96,6 +108,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                     //Ignite Debuff
                     Explosion(ExplosionLevel.Large);
                     RemoveDebuff();
+                    _vfxHolder.RemoveAllVFX();
                 }
                 break;
             case Element.Ice:
@@ -126,16 +139,66 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                 break;
         }
     }
-
-    private void StackSecondDebuff(Element _element) {
+    private void StackPersistentDebuff(Element _element)
+    {
         switch (_element)
         {
             case Element.BlackLightning:
-                Debug.Log("addBlack");
-                unit.isOnBlackLightning = true;
+                if (!persistentDebuff.Contains(_element))
+                {
+                    unit.isOnBlackLightning = true;
+                    persistentDebuff.Add(_element);
+                }
                 break;
         }
     }
+    private void CheckMultiplyDebuff(Element _first, Element _second)
+    {
+        switch (_first)
+        {
+            case Element.Fire:
+                if (_second == Element.Ice)
+                {
+                    //Blue Fire, burn and slow speed
+                    unit.isOnBlueFire = true;
+                    Burning_BlueFire();
+                }
+                else if (_second == Element.Lightning)
+                {
+                    Explosion(GetLightningDebuffLevel());
+                    _vfxHolder.RemoveAllVFX();
+                }
+                break;
+            case Element.Ice:
+                if (_second == Element.Fire)
+                {
+                    //Explode with Ice, AOE
+                    _vfxHolder.PlayIceExplosionVFX();
+                }
+                else if (_second == Element.Lightning)
+                {
+                    //strike lightning come in, push back
+
+                }
+                break;
+            case Element.Lightning:
+                if (_second == Element.Fire)
+                {
+                    //Purple fire, deal with 3,5,7% real damage with 3 sec
+                    unit.isOnPurpleFire = true;
+                    Burning_PurpleFire();
+                }
+                else if (_second == Element.Ice)
+                {
+                    //Create Ice area,Enemy Slider forward
+
+                }
+                break;
+        }
+
+        RemoveDebuff();
+    }
+
 
     #region Debuff Functionality
     private void Burning()
@@ -147,7 +210,50 @@ public class DebuffHolder : MonoBehaviour,IDebuff
         }
 
         stackCoroutine = StartCoroutine(m_stateEffect.DamagePerSecCoroutine(unit, damageAmount, duration, OnFireDebuffReset));
-        _vfxHolder.PlayOnFireVFX(GetFireDebuffLevel());
+        _vfxHolder.PlayFireVFX(GetFireDebuffLevel());
+    }
+
+    private void Burning_BlueFire()
+    {
+        var damageAmount = SO_fireDebuff.fireDebuffs[GetFireDebuffLevel()].damage;
+        var slowAmount = SO_extraDebuff.blueFireSlowAmount;
+        var duration = SO_fireDebuff.fireDebuffs[GetFireDebuffLevel()].duration;
+        if (effectCoroutine_01 != null)
+        {
+            StopCoroutine(effectCoroutine_01);
+        }
+        if (effectCoroutine_02 != null) { 
+            StopCoroutine(effectCoroutine_02);
+        }
+
+        _vfxHolder.PlayBlueFireVFX(GetFireDebuffLevel());
+
+        effectCoroutine_01 = m_stateEffect.DamagePerSecCoroutine(unit, damageAmount, duration);
+        effectCoroutine_02 = m_stateEffect.SlowSpeedOverTimeCoroutine(unit, slowAmount, duration, OnBlueFireDebuffReset);
+        StartCoroutine(effectCoroutine_01);
+        StartCoroutine(effectCoroutine_02);
+
+    }
+    private void Burning_PurpleFire()
+    {
+        var damageAmount = SO_extraDebuff.GetExplosionPercentage(GetLightningDebuffLevel());
+        var duration = SO_fireDebuff.fireDebuffs[GetLightningDebuffLevel()].duration;
+
+        if (effectCoroutine_01 != null)
+        {
+            StopCoroutine(effectCoroutine_01);
+        }
+        if (effectCoroutine_02 != null)
+        {
+            StopCoroutine(effectCoroutine_02);
+        }
+
+        _vfxHolder.PlayFireVFX(GetLightningDebuffLevel());
+        _vfxHolder.PlayPurpleFireVFX(GetLightningDebuffLevel());
+
+        effectCoroutine_01 = m_stateEffect.DamagePercentPerSecCoroutine(unit, damageAmount, duration , OnPurpleFireDebuffReset);
+        StartCoroutine(effectCoroutine_01);
+
     }
 
     private void Icing() {
@@ -157,8 +263,8 @@ public class DebuffHolder : MonoBehaviour,IDebuff
             StopCoroutine(stackCoroutine);
         }
 
-        stackCoroutine = StartCoroutine(m_stateEffect.SlowSpeedOverTimeCoroutine(unit, slowAmount, duration, OnIceDebuffReset));
         _vfxHolder.PlayIcicleVFX(Ice_StateLevel);
+        stackCoroutine = StartCoroutine(m_stateEffect.SlowSpeedOverTimeCoroutine(unit, slowAmount, duration, OnIceDebuffReset));
     }
 
     private void Shocking() {
@@ -168,7 +274,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
             StopCoroutine(stackCoroutine);
         }
 
-        _vfxHolder.PlayShockVFX();
+        _vfxHolder.PlayShockVFX_Yellow();
         stackCoroutine = StartCoroutine(m_stateEffect.ShockingPerSecondCoroutine(unit,damageAmount));
     }
 
@@ -176,19 +282,21 @@ public class DebuffHolder : MonoBehaviour,IDebuff
     {
         var damageAmount = SO_BlackLightningDebuff.damage;
         var duration = SO_BlackLightningDebuff.duration;
+        var interval = SO_BlackLightningDebuff.interval;
         if (blackLightningCoroutine != null)
         {
             StopCoroutine(blackLightningCoroutine);
         }
 
-        _vfxHolder.PlayShockVFX();
-        stackCoroutine = StartCoroutine(m_stateEffect.PersistentShockingCoroutine(unit, damageAmount, duration,() => unit.isOnBlackLightning = false,() => unit.isOnBlackLightning = true));
+        _vfxHolder.PlayShockVFX_Black();
+        blackLightningCoroutine = StartCoroutine(m_stateEffect.PersistentShockingCoroutine(unit, damageAmount, duration, interval,() => unit.isOnBlackLightning = false,() => unit.isOnBlackLightning = true));
     }
 
     public void Freeze()
     {
         //Disable behaviour
         float freezeTimer = SO_extraDebuff.freezeTimer;
+
         _vfxHolder.PlayFreezeVFX(true);
         StartCoroutine(m_stateEffect.FreezeCoroutine(unit, freezeTimer, () =>
         {
@@ -199,12 +307,14 @@ public class DebuffHolder : MonoBehaviour,IDebuff
     public void Explosion(ExplosionLevel _level)
     {
         float damagePercent = SO_extraDebuff.GetExplosionPercentage(_level);
+        _vfxHolder.PlayExplosionVFX();
         m_stateEffect.Explosion(unit, damagePercent);
     }
 
     public void Explosion(int _level)
     {
         float damagePercent = SO_extraDebuff.GetExplosionPercentage(_level);
+        _vfxHolder.PlayExplosionVFX();
         m_stateEffect.Explosion(unit, damagePercent);
     }
     #endregion
@@ -218,23 +328,33 @@ public class DebuffHolder : MonoBehaviour,IDebuff
         fire_StateLevel = 0;
         Ice_StateLevel = 0;
         Lightning_StateLevel = 0;
-        _vfxHolder.RemoveVFX();
+        basicDebuff.Clear();
     }
     private void ResetFireDebuff()
     {
         fire_StateLevel = 0;
-        _vfxHolder.RemoveVFX();
+        _vfxHolder.RemoveAllVFX();
     }
 
     private void ResetIceDebuff()
     {
         Ice_StateLevel = 0;
-        _vfxHolder.RemoveVFX();
+        _vfxHolder.RemoveAllVFX();
     }
 
     private void ResetLightningDebuff()
     {
         Lightning_StateLevel = 0;
+    }
+
+    private void ResetBlueFireDebuff() {
+        unit.isOnBlueFire = false;
+        _vfxHolder.RemoveAllVFX();
+    }
+    private void ResetPurpleFireDebuff()
+    {
+        unit.isOnPurpleFire = false;
+        _vfxHolder.RemoveAllVFX();
     }
     #endregion
 
@@ -246,71 +366,21 @@ public class DebuffHolder : MonoBehaviour,IDebuff
             case Element.Fire:
             case Element.Ice:
             case Element.Lightning:
-                if (debuffsOnCharacter.Count == 0)
+                if (basicDebuff.Count == 0)
                 {
-                    debuffsOnCharacter.Add(_element);
+                    basicDebuff.Add(_element);
                 }
                 else {
-                    debuffsOnCharacter[0] = _element;
+                    basicDebuff[0] = _element;
                 }
                 break;
         }
     }
 
-    private bool CheckSecondDebuffLayer(Element _element) {
-        switch (_element)
-        {
-            case Element.BlackLightning:
-                if (!debuffsOnCharacter.Contains(_element))
-                    debuffsOnCharacter.Add(_element);
-                return true;
-        }
-        return false;
-    }
-
-    private void CheckMultiplyDebuff(Element _first, Element _second) {
-        switch (_first)
-        {
-            case Element.Fire:
-                if (_second == Element.Ice) {
-                    //Blue fire, deal with 3,5,7% real damage with 3 sec
-
-                } else if (_second == Element.Lightning) {
-                    Explosion(GetFireDebuffLevel());
-                }
-                break;
-            case Element.Ice:
-                if (_second == Element.Fire)
-                {
-                    //Explode with Ice, AOE
-                }
-                else if (_second == Element.Lightning)
-                {
-                    //strike lightning come in, push back
-                }
-                break;
-            case Element.Lightning:
-                if (_second == Element.Fire)
-                {
-                    //Burn
-                }
-                else if (_second == Element.Ice)
-                {
-                    //Chaos, miss direction? Attack Ally
-                }
-                break;
-        }
-        RemoveDebuff();
-    }
-
+   
     private Element GetFirstDebuff() {
-        if (debuffsOnCharacter.Count > 0)
-            return debuffsOnCharacter[0];
-        return Element.Fire;
-    }
-    private Element GetSecondDebuff() {
-        if (debuffsOnCharacter.Count > 1)
-            return debuffsOnCharacter[1];
+        if (basicDebuff.Count > 0)
+            return basicDebuff[0];
         return Element.Fire;
     }
     #endregion

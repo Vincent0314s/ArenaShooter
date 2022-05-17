@@ -8,6 +8,7 @@ public class StateEffectCollection
     private WaitForSeconds perSecond;
     private WaitForSeconds coldDuration;
     private WaitForSeconds freezeDuration;
+
     private WaitForSeconds shockingDuration;
 
     public StateEffectCollection() {
@@ -34,6 +35,19 @@ public class StateEffectCollection
         _OnDurationEnd?.Invoke();
     }
 
+    public IEnumerator DamagePercentPerSecCoroutine(Unit_Base _unit, float _damage, float _duration, Action _OnDurationEnd = null)
+    {
+        float currentTimer = 0;
+
+        while (currentTimer < _duration)
+        {
+            yield return perSecond;
+            _unit.GetDamageByPercent(_damage);
+            currentTimer += 1;
+        }
+        _OnDurationEnd?.Invoke();
+    }
+
     public IEnumerator SlowSpeedOverTimeCoroutine(Unit_Base _unit, float _slowAmount, float _duration , Action _OnDurationEnd = null) {
         coldDuration = new WaitForSeconds(_duration);
 
@@ -50,7 +64,7 @@ public class StateEffectCollection
         _unit.ResetMovingSpeed();
     }
 
-    public IEnumerator PersistentShockingCoroutine(Unit_Base _unit, float _damage,float _duration,Action _OnEffectBegin, Action _OnEffectEnd)
+    public IEnumerator PersistentShockingCoroutine(Unit_Base _unit, float _damage,float _duration, float _nextDuration,Action _OnEffectBegin, Action _OnEffectEnd)
     {
         shockingDuration = new WaitForSeconds(_duration);
         _OnEffectBegin?.Invoke();
@@ -58,6 +72,7 @@ public class StateEffectCollection
         _unit.FreezeSpeed();
         yield return shockingDuration;
         _unit.ResetMovingSpeed();
+        yield return new WaitForSeconds(_nextDuration);
         _OnEffectEnd?.Invoke();
     }
 

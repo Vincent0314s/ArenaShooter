@@ -7,4 +7,5 @@ public class BlackLightningDebufSO : ScriptableObject
 {
     public float damage;
     public float duration;
+    public float interval;
 }

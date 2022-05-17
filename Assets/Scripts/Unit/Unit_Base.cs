@@ -37,6 +37,8 @@ public class Unit_Base : MonoBehaviour,IHPChange
     [Space()]
     public bool isFreeze;
     public bool isOnBlueFire;
+    public bool isOnPurpleFire;
+
     public bool isOnBlackLightning;
 
     protected virtual void Awake()
@@ -137,4 +139,8 @@ public class Unit_Base : MonoBehaviour,IHPChange
         isFreeze = false;
         agent.speed = movingSpeed;
     }
+
+    public bool HasSpecialDebuff() {
+        return isOnBlueFire || isOnPurpleFire;
+    } 
 }

@@ -16,6 +16,6 @@ MonoBehaviour:
   - damage: 30
     duration: 3
   - damage: 39
-    duration: 3
+    duration: 4
   - damage: 48
-    duration: 3
+    duration: 5

@@ -15,10 +15,7 @@ MonoBehaviour:
   iceDebuffs:
   - slowAmount: 0.5
     duration: 3
-    color: {r: 0.4575472, g: 0.9731845, b: 1, a: 1}
   - slowAmount: 0.5
     duration: 4
-    color: {r: 0, g: 0.55506897, b: 1, a: 1}
-  - slowAmount: 0.5
+  - slowAmount: 1
     duration: 5
-    color: {r: 0, g: 0.14795828, b: 1, a: 1}

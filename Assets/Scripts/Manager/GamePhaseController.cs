@@ -40,6 +40,5 @@ public class GamePhaseController : MonoBehaviour
             var enemy = waves[currentWaveIndex].enemyPrefabs[j];
             StartCoroutine(enemy.SpawnEnemyCoroutine());
         }
-        
     }
 }

@@ -22,6 +22,7 @@ public class PlacementManager : MonoBehaviour
     public List<PlaceObject> placeObjects;
 
     public GameObject currentBuildObject { get; set; }
+    [SerializeField]private List<GameObject> allyUnitInPlace;
 
     private bool isChoosingPosition;
     private int currentBuildIndex;
@@ -51,6 +52,7 @@ public class PlacementManager : MonoBehaviour
                     GameObject GO;
                     GO = Instantiate(item.prefab_AO, _currentPosition, Quaternion.identity);
                     GO.GetComponent<IGetGridManager>().SetGridManager(grid);
+                    allyUnitInPlace.Add(GO);
                 }
             }
             currentBuildIndex = -1;
@@ -78,5 +80,13 @@ public class PlacementManager : MonoBehaviour
     private void DestroyPO() {
         Destroy(currentBuildObject);
         currentBuildObject = null;
+    }
+
+    public void ClearAllyUnit() {
+        foreach (var unit in allyUnitInPlace)
+        {
+            Destroy(unit);
+        }
+        allyUnitInPlace.Clear();
     }
 }
