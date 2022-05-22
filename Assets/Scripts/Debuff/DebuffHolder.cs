@@ -178,8 +178,9 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                 else if (_second == Element.Lightning)
                 {
                     //strike lightning come in, push back
-
+                    unit.isPushingBack = true;
                 }
+                _vfxHolder.RemoveAllVFX();
                 break;
             case Element.Lightning:
                 if (_second == Element.Fire)
@@ -328,6 +329,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
         fire_StateLevel = 0;
         Ice_StateLevel = 0;
         Lightning_StateLevel = 0;
+        unit.ResetMovingSpeed();
         basicDebuff.Clear();
     }
     private void ResetFireDebuff()

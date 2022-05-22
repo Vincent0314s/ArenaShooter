@@ -17,6 +17,7 @@ public struct CharacterData
 public class Unit_Base : MonoBehaviour,IHPChange
 {
     protected NavMeshAgent agent;
+    protected Rigidbody rb;
 
     [Header("Value Settings"), Space()]
     [SerializeField] protected bool hasHPBar;
@@ -38,12 +39,15 @@ public class Unit_Base : MonoBehaviour,IHPChange
     public bool isFreeze;
     public bool isOnBlueFire;
     public bool isOnPurpleFire;
+    public bool isPushingBack;
+    public bool isSlidingForward;
 
     public bool isOnBlackLightning;
 
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
     }
 
     protected virtual void Start()
@@ -79,6 +83,14 @@ public class Unit_Base : MonoBehaviour,IHPChange
             return;
         }
     }
+
+    protected virtual void FixedUpdate() {
+        if (isPushingBack)
+            PushBack();
+        else if (isSlidingForward)
+            PushForward();
+    }
+
     public virtual void MoveToDestination(Vector3 _clickPoint) { }
 
     protected virtual void LookAtTarget(Transform _target) {
@@ -142,5 +154,15 @@ public class Unit_Base : MonoBehaviour,IHPChange
 
     public bool HasSpecialDebuff() {
         return isOnBlueFire || isOnPurpleFire;
-    } 
+    }
+
+    public void PushBack() {
+        rb.AddForce(-transform.forward * 500f);
+        isPushingBack = false;
+    }
+
+    public void PushForward() {
+        rb.AddForce(transform.forward * 500f);
+        isSlidingForward = false;
+    }
 }
