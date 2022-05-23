@@ -15,6 +15,7 @@ public class VFXHolder : MonoBehaviour
     [SerializeField] private VFX_Object iceFogVFX;
     [SerializeField] private VFX_Object shockVFX_Yellow;
     [SerializeField] private VFX_Object shockVFX_Black;
+    [SerializeField] private VFX_Object singleStrikeVFX;
 
     [SerializeField] private VFX_Object explosion_01VFX;
 
@@ -81,6 +82,10 @@ public class VFXHolder : MonoBehaviour
 
     public void PlayExplosionVFX() {
         explosion_01VFX.PlayEffect();
+    }
+
+    public void PlayLightningStrike() {
+        singleStrikeVFX.PlayEffect();
     }
 
     public void RemoveAllVFX() {

@@ -63,12 +63,16 @@ public class PlayerRayCastManager : MonoBehaviour
             switch (m_UnitManager.currentUnit_Ally.path)
             {
                 case Unit_Ally.Path.Left:
-                    if(hitInfo.transform.tag == ConstStringCollection.TAG_PATH_LEFT)
+                    if (hitInfo.transform.tag == ConstStringCollection.TAG_PATH_LEFT) {
+                        this.Log("LeftPath");
                         m_UnitManager.currentUnit_Ally.MoveToDestination(hitInfo.point);
+                    }
                     break;
                 case Unit_Ally.Path.Right:
-                    if (hitInfo.transform.tag == ConstStringCollection.TAG_PATH_RIGHT)
+                    if (hitInfo.transform.tag == ConstStringCollection.TAG_PATH_RIGHT) {
+                        this.Log("RightPath");
                         m_UnitManager.currentUnit_Ally.MoveToDestination(hitInfo.point);
+                    }
                     break;
             }
         }

@@ -179,6 +179,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                 {
                     //strike lightning come in, push back
                     unit.isPushingBack = true;
+                    _vfxHolder.PlayLightningStrike();
                 }
                 _vfxHolder.RemoveAllVFX();
                 break;
@@ -192,7 +193,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                 else if (_second == Element.Ice)
                 {
                     //Create Ice area,Enemy Slider forward
-
+                    m_stateEffect.GenerateIceArea(this.transform);
                 }
                 break;
         }

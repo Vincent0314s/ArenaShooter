@@ -16,9 +16,7 @@ MonoBehaviour:
   - name: VisualEffect
     enumVariable:
     - StaticElectricArea
-    - Fire_Small
-    - Fire_Medium
-    - Fire_Large
+    - GroundIceArea
   - name: SoundEffect
     enumVariable: []
   - name: UI_SoundEffects

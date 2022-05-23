@@ -93,4 +93,10 @@ public class StateEffectCollection
         Vector3 pos = new Vector3(_transform.position.x, _transform.position.y + 0.35f, _transform.position.z);
         VisualEffectManager.CreateVisualEffect(VisualEffect.StaticElectricArea, pos, Quaternion.identity);
     }
+
+    public void GenerateIceArea(Transform _transform)
+    {
+        Vector3 pos = new Vector3(_transform.position.x, _transform.position.y + 0.35f, _transform.position.z);
+        VisualEffectManager.CreateVisualEffect(VisualEffect.GroundIceArea, pos, Quaternion.identity);
+    }
 }

@@ -49,7 +49,8 @@ public class Unit_Ally : Unit_Base, IGetGridManager
     {
         if (collision.transform.tag.Equals(ConstStringCollection.TAG_PATH_LEFT)) {
             path = Path.Left;
-        } else if (collision.transform.tag.Equals(ConstStringCollection.TAG_PATH_RIGHT)) {
+        } 
+        else if (collision.transform.tag.Equals(ConstStringCollection.TAG_PATH_RIGHT)) {
             path = Path.Right;
         }
     }
