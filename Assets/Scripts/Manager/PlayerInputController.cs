@@ -7,16 +7,27 @@ using Utils;
 public class PlayerInputController : MonoBehaviour
 {
     [SerializeField] private PlacementManager m_placementManager;
+    [SerializeField] private SkillManager m_skillManager;
     private PlayerRayCastManager m_playerRayCastManager;
 
     private PlayerInputActions playerInputActions;
 
+    [Header("PlayerInput")]
     private InputAction movement;
     private InputAction rotateCamera;
     private InputAction zoomCamera;
 
     private InputAction mouseLeftClick;
     private InputAction mouseRightClick;
+
+    private InputAction skill_1_Button;
+    private InputAction skill_2_Button;
+    private InputAction skill_3_Button;
+
+
+    [Header("SkillMode")]
+    private InputAction skillLeftClick;
+    private InputAction skillRightClick;
 
     private void Awake()
     {
@@ -30,9 +41,12 @@ public class PlayerInputController : MonoBehaviour
         rotateCamera = playerInputActions.Player.RotateCamera;
         zoomCamera = playerInputActions.Player.ZoomCamera;
 
+        skill_1_Button = playerInputActions.Player.Skill_1;
+        skill_2_Button = playerInputActions.Player.Skill_2;
+        skill_3_Button = playerInputActions.Player.Skill_3;
+
         mouseLeftClick = playerInputActions.Player.MouseLeftClick;
         mouseRightClick = playerInputActions.Player.MouseRightClick;
-
 
         mouseLeftClick.performed += m_placementManager.CreateAO;
         mouseLeftClick.started += m_playerRayCastManager.SelecteUnit;
@@ -64,5 +78,44 @@ public class PlayerInputController : MonoBehaviour
 
     public float GetZoomCameraValue() {
         return zoomCamera.ReadValue<Vector2>().y;
+    }
+
+    public bool IsPressedSkillButton(int _index) {
+        switch (_index)
+        {
+            case 0:
+                return skill_1_Button.IsPressed();
+            case 1:
+                return skill_2_Button.IsPressed();
+            case 2:
+                return skill_3_Button.IsPressed();
+        }
+        return false;
+    }
+
+    public void EnableSkillMode(bool _activate) {
+        if (_activate)
+        {
+            mouseLeftClick.performed -= m_placementManager.CreateAO;
+            mouseLeftClick.started -= m_playerRayCastManager.SelecteUnit;
+
+            mouseLeftClick.performed += m_skillManager.GenerateSkill;
+            //mouseLeftClick.started += m_playerRayCastManager.SelecteUnit;
+
+            mouseRightClick.performed -= m_playerRayCastManager.MoveUnitToPosition;
+            mouseRightClick.performed += m_skillManager.CancelSkill;
+
+        }
+        else {
+            //LeftClick
+            mouseLeftClick.performed -= m_skillManager.GenerateSkill;
+          
+            mouseLeftClick.performed += m_placementManager.CreateAO;
+            mouseLeftClick.started += m_playerRayCastManager.SelecteUnit;
+
+            //RightClick
+            mouseRightClick.performed -= m_skillManager.CancelSkill;
+            mouseRightClick.performed += m_playerRayCastManager.MoveUnitToPosition;
+        }
     }
 }

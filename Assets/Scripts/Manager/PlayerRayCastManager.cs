@@ -10,12 +10,14 @@ public class PlayerRayCastManager : MonoBehaviour
     [SerializeField] UnitManager m_UnitManager;
     [SerializeField] PlacementManager m_placementManager;
     [SerializeField] GridManager m_gridManager;
+    [SerializeField] SkillManager m_skillManager;
 
     [SerializeField] private float rayLength = 50f;
     [Header("LayerMask Settings"), Space()]
     [SerializeField] private LayerMask Mask_AllyPath;
     [SerializeField] private LayerMask Mask_AllyUnit;
-
+    [SerializeField] private LayerMask Mask_Ground;
+    
     private void Update()
     {
         RayCastUpdate();
@@ -27,9 +29,19 @@ public class PlayerRayCastManager : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out hitInfo, rayLength, Mask_AllyPath))
+        if (m_skillManager.isInSkillMode)
         {
-            m_placementManager.SetCurrentBuildObjectPosition(m_gridManager.GetNearestPointOnGrid(hitInfo.point));
+            if (Physics.Raycast(ray, out hitInfo, rayLength, Mask_Ground))
+            {
+                Vector3 hitPoint = new Vector3(hitInfo.point.x, hitInfo.point.y + 0.2f, hitInfo.point.z);
+                m_skillManager.SetIndicatorPosition(hitPoint);
+            }
+        }
+        else {
+            if (Physics.Raycast(ray, out hitInfo, rayLength, Mask_AllyPath))
+            {
+                m_placementManager.SetCurrentBuildObjectPosition(m_gridManager.GetNearestPointOnGrid(hitInfo.point));
+            }
         }
     }
 

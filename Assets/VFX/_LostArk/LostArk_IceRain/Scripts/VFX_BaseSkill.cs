@@ -20,7 +20,7 @@ public class VFX_BaseSkill : MonoBehaviour
         }
     }
 
-    void LaunchSkill() {
+    public void LaunchSkill() {
         StartCoroutine(LaunchSkillCoroutine());
     }
 

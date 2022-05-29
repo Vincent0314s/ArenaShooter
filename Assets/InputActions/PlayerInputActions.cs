@@ -71,6 +71,33 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Skill_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""f70a1ce3-8288-426e-a3d7-f95be9388b74"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""056d2bc0-8eab-49a9-bc79-e077cd1775af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_3"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fd6c484-8049-4471-b108-93168199c475"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -238,6 +265,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""RotateCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a0d55a3-e835-4c11-988f-69211da9e766"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skill_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ca9a80d-5583-4b61-b84f-e9140980dbbc"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skill_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7fa5f83-4d9a-42f8-be93-fae29f0ecf1d"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skill_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -756,6 +816,54 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SkillMode"",
+            ""id"": ""fb062ff3-a39e-4887-9f12-a5b06adc6131"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""29ecdf18-5f73-4894-a080-59fdeab5b5c2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""aaad1513-ecb4-447b-9562-9ed56f7ed528"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9cf4e3e1-a4c8-4df3-a39a-17eaf9ff2473"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6120587-dbd0-4805-9504-c9ac3d447197"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseRightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -828,6 +936,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_MouseRightClick = m_Player.FindAction("MouseRightClick", throwIfNotFound: true);
         m_Player_ZoomCamera = m_Player.FindAction("ZoomCamera", throwIfNotFound: true);
         m_Player_RotateCamera = m_Player.FindAction("RotateCamera", throwIfNotFound: true);
+        m_Player_Skill_1 = m_Player.FindAction("Skill_1", throwIfNotFound: true);
+        m_Player_Skill_2 = m_Player.FindAction("Skill_2", throwIfNotFound: true);
+        m_Player_Skill_3 = m_Player.FindAction("Skill_3", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -840,6 +951,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // SkillMode
+        m_SkillMode = asset.FindActionMap("SkillMode", throwIfNotFound: true);
+        m_SkillMode_MouseLeftClick = m_SkillMode.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_SkillMode_MouseRightClick = m_SkillMode.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -904,6 +1019,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseRightClick;
     private readonly InputAction m_Player_ZoomCamera;
     private readonly InputAction m_Player_RotateCamera;
+    private readonly InputAction m_Player_Skill_1;
+    private readonly InputAction m_Player_Skill_2;
+    private readonly InputAction m_Player_Skill_3;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -913,6 +1031,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @MouseRightClick => m_Wrapper.m_Player_MouseRightClick;
         public InputAction @ZoomCamera => m_Wrapper.m_Player_ZoomCamera;
         public InputAction @RotateCamera => m_Wrapper.m_Player_RotateCamera;
+        public InputAction @Skill_1 => m_Wrapper.m_Player_Skill_1;
+        public InputAction @Skill_2 => m_Wrapper.m_Player_Skill_2;
+        public InputAction @Skill_3 => m_Wrapper.m_Player_Skill_3;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -937,6 +1058,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @RotateCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCamera;
                 @RotateCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCamera;
                 @RotateCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateCamera;
+                @Skill_1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_1;
+                @Skill_1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_1;
+                @Skill_1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_1;
+                @Skill_2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_2;
+                @Skill_2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_2;
+                @Skill_2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_2;
+                @Skill_3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
+                @Skill_3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
+                @Skill_3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -956,6 +1086,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @RotateCamera.started += instance.OnRotateCamera;
                 @RotateCamera.performed += instance.OnRotateCamera;
                 @RotateCamera.canceled += instance.OnRotateCamera;
+                @Skill_1.started += instance.OnSkill_1;
+                @Skill_1.performed += instance.OnSkill_1;
+                @Skill_1.canceled += instance.OnSkill_1;
+                @Skill_2.started += instance.OnSkill_2;
+                @Skill_2.performed += instance.OnSkill_2;
+                @Skill_2.canceled += instance.OnSkill_2;
+                @Skill_3.started += instance.OnSkill_3;
+                @Skill_3.performed += instance.OnSkill_3;
+                @Skill_3.canceled += instance.OnSkill_3;
             }
         }
     }
@@ -1065,6 +1204,47 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // SkillMode
+    private readonly InputActionMap m_SkillMode;
+    private ISkillModeActions m_SkillModeActionsCallbackInterface;
+    private readonly InputAction m_SkillMode_MouseLeftClick;
+    private readonly InputAction m_SkillMode_MouseRightClick;
+    public struct SkillModeActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public SkillModeActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseLeftClick => m_Wrapper.m_SkillMode_MouseLeftClick;
+        public InputAction @MouseRightClick => m_Wrapper.m_SkillMode_MouseRightClick;
+        public InputActionMap Get() { return m_Wrapper.m_SkillMode; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SkillModeActions set) { return set.Get(); }
+        public void SetCallbacks(ISkillModeActions instance)
+        {
+            if (m_Wrapper.m_SkillModeActionsCallbackInterface != null)
+            {
+                @MouseLeftClick.started -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
+                @MouseLeftClick.performed -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
+                @MouseLeftClick.canceled -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
+                @MouseRightClick.started -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
+                @MouseRightClick.performed -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
+                @MouseRightClick.canceled -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
+            }
+            m_Wrapper.m_SkillModeActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MouseLeftClick.started += instance.OnMouseLeftClick;
+                @MouseLeftClick.performed += instance.OnMouseLeftClick;
+                @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+                @MouseRightClick.started += instance.OnMouseRightClick;
+                @MouseRightClick.performed += instance.OnMouseRightClick;
+                @MouseRightClick.canceled += instance.OnMouseRightClick;
+            }
+        }
+    }
+    public SkillModeActions @SkillMode => new SkillModeActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1117,6 +1297,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMouseRightClick(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
+        void OnSkill_1(InputAction.CallbackContext context);
+        void OnSkill_2(InputAction.CallbackContext context);
+        void OnSkill_3(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1130,5 +1313,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface ISkillModeActions
+    {
+        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnMouseRightClick(InputAction.CallbackContext context);
     }
 }
