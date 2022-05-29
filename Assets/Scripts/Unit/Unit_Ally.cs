@@ -5,17 +5,11 @@ using Utils;
 
 public class Unit_Ally : Unit_Base, IGetGridManager
 {
-    public enum Path { 
-        Left,
-        Right
-    }
-
-    public Path path;
+    public WalkablePath path;
     GridManager grid;
     protected bool isBeingSelected;
     [SerializeField]
     protected GameObject selectedCircle;
-
 
     protected override void Awake()
     {
@@ -31,7 +25,7 @@ public class Unit_Ally : Unit_Base, IGetGridManager
     public override void MoveToDestination(Vector3 _clickPoint)
     {
         var finalPosition = grid.GetNearestPointOnGrid(_clickPoint);
-        this.Log(finalPosition);
+        //this.Log(finalPosition);
         agent.SetDestination(finalPosition);
     }
 
@@ -43,15 +37,5 @@ public class Unit_Ally : Unit_Base, IGetGridManager
     public void SelectUnit(bool _b) {
         isBeingSelected = _b;
         selectedCircle.SetActive(_b);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.tag.Equals(ConstStringCollection.TAG_PATH_LEFT)) {
-            path = Path.Left;
-        } 
-        else if (collision.transform.tag.Equals(ConstStringCollection.TAG_PATH_RIGHT)) {
-            path = Path.Right;
-        }
     }
 }

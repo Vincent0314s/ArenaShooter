@@ -39,3 +39,9 @@ public enum ExplosionLevel
 	FullAmount,
 
 }
+public enum WalkablePath 
+{
+	Left,
+	Right,
+
+}

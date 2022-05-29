@@ -17,17 +17,16 @@ public class GridManager : MonoBehaviour
     public Transform allyPath_Left_Parent;
     public Transform allyPath_Right_Parent;
     
-    private List<GameObject> allyPath_Left;
-    private List<GameObject> allyPath_Right;
+    private List<PathObject> allyPath_Left;
+    private List<PathObject> allyPath_Right;
 
-    private void Awake()
+    private void Start()
     {
-        allyPath_Left = new List<GameObject>();
-        allyPath_Right = new List<GameObject>();
+        allyPath_Left = new List<PathObject>();
+        allyPath_Right = new List<PathObject>();
 
         InitListFromObjectParent(allyPath_Left_Parent, allyPath_Left);
         InitListFromObjectParent(allyPath_Right_Parent, allyPath_Right);
-
     }
 
     public Vector3 GetNearestPointOnGrid(Vector3 _position) {
@@ -50,11 +49,53 @@ public class GridManager : MonoBehaviour
         return result;
     }
 
-    private void InitListFromObjectParent(Transform _parent,List<GameObject> _list) {
+    private void InitListFromObjectParent(Transform _parent,List<PathObject> _list) {
         for (int i = 0; i < _parent.childCount; i++)
         {
-            var child = _parent.GetChild(i).gameObject;
+            var child = _parent.GetChild(i).GetComponent<PathObject>();
+            child.ShowPath(false);
             _list.Add(child);
+        }
+    }
+
+    public void ShowWalkablePath(WalkablePath _path, bool _active) {
+        switch (_path)
+        {
+            case WalkablePath.Left:
+                foreach (var grid in allyPath_Left)
+                {
+                    grid.ShowPath(_active);
+                }
+                break;
+            case WalkablePath.Right:
+                foreach (var grid in allyPath_Right)
+                {
+                    grid.ShowPath(_active);
+                }
+                break;
+        }
+    }
+
+    public void ShowBuildablePath(bool _active) {
+        ShowWalkablePath(WalkablePath.Left, _active);
+        ShowWalkablePath(WalkablePath.Right, _active);
+    }
+
+    public void UpdatePath(WalkablePath _path) {
+        switch (_path)
+        {
+            case WalkablePath.Left:
+                foreach (var grid in allyPath_Left)
+                {
+                    grid.UpdatePath();
+                }
+                break;
+            case WalkablePath.Right:
+                foreach (var grid in allyPath_Right)
+                {
+                    grid.UpdatePath();
+                }
+                break;
         }
     }
 

@@ -41,11 +41,15 @@ public class PlayerRayCastManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo, rayLength, Mask_AllyUnit))
         {
-            var currentSelectedUnit = hitInfo.transform.GetComponent<Unit_Ally>();
+            Unit_Ally currentSelectedUnit = hitInfo.transform.GetComponent<Unit_Ally>();
             m_UnitManager.SetCurrentUnit(currentSelectedUnit);
+            m_gridManager.ShowWalkablePath(currentSelectedUnit.path,true);
         }
         else
         {
+            if (m_UnitManager.currentUnit_Ally == null)
+                return;
+            m_gridManager.ShowWalkablePath(m_UnitManager.currentUnit_Ally.path, false);
             m_UnitManager.CancelUnitSelection();
         }
     }
@@ -62,15 +66,13 @@ public class PlayerRayCastManager : MonoBehaviour
         {
             switch (m_UnitManager.currentUnit_Ally.path)
             {
-                case Unit_Ally.Path.Left:
+                case WalkablePath.Left:
                     if (hitInfo.transform.tag == ConstStringCollection.TAG_PATH_LEFT) {
-                        this.Log("LeftPath");
                         m_UnitManager.currentUnit_Ally.MoveToDestination(hitInfo.point);
                     }
                     break;
-                case Unit_Ally.Path.Right:
+                case WalkablePath.Right:
                     if (hitInfo.transform.tag == ConstStringCollection.TAG_PATH_RIGHT) {
-                        this.Log("RightPath");
                         m_UnitManager.currentUnit_Ally.MoveToDestination(hitInfo.point);
                     }
                     break;

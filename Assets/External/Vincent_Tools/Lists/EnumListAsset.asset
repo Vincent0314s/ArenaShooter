@@ -40,3 +40,7 @@ MonoBehaviour:
     - Large
     - ExtraLarge
     - FullAmount
+  - name: WalkablePath
+    enumVariable:
+    - Left
+    - Right

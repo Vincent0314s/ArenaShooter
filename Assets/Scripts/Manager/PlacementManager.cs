@@ -18,7 +18,7 @@ public class PlaceObject {
 
 public class PlacementManager : MonoBehaviour
 {
-    private GridManager grid;
+    private GridManager m_gridManager;
     public List<PlaceObject> placeObjects;
 
     public GameObject currentBuildObject { get; set; }
@@ -29,7 +29,7 @@ public class PlacementManager : MonoBehaviour
 
     private void Awake()
     {
-        grid = GetComponent<GridManager>();
+        m_gridManager = GetComponent<GridManager>();
     }
 
     public void SetCurrentBuildObjectPosition(Vector3 _newPos) {
@@ -51,12 +51,13 @@ public class PlacementManager : MonoBehaviour
                 {
                     GameObject GO;
                     GO = Instantiate(item.prefab_AO, _currentPosition, Quaternion.identity);
-                    GO.GetComponent<IGetGridManager>().SetGridManager(grid);
+                    GO.GetComponent<IGetGridManager>().SetGridManager(m_gridManager);
                     allyUnitInPlace.Add(GO);
                 }
             }
             currentBuildIndex = -1;
             isChoosingPosition = false;
+            m_gridManager.ShowBuildablePath(isChoosingPosition);
         }
     }
 
@@ -69,6 +70,9 @@ public class PlacementManager : MonoBehaviour
 
         isChoosingPosition = true;
         currentBuildIndex = _typeIndex;
+
+        m_gridManager.ShowBuildablePath(isChoosingPosition);
+
         foreach (PlaceObject item in placeObjects)
         {
             if ((int)item.type == _typeIndex) {

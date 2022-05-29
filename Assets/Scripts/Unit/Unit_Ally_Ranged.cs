@@ -27,8 +27,9 @@ public class Unit_Ally_Ranged : Unit_Ally
         launchPoint = transform.Find("LaunchPoint");
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         CheckHasFirstEnemy();
     }
 
