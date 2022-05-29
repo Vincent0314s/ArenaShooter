@@ -648,7 +648,7 @@ MonoBehaviour:
   shockVFX_Yellow: {fileID: 7736271871057440973}
   shockVFX_Black: {fileID: 6805947150137762785}
   singleStrikeVFX: {fileID: 3834674555721487680}
-  explosion_01VFX: {fileID: 664254669237351375}
+  explosion_01VFX: {fileID: 8367182306393518132}
 --- !u!1001 &69573977781639200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -929,9 +929,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36a7c8f6f08b8f34a858163e2bce1137, type: 3}
---- !u!114 &664254669237351375 stripped
+--- !u!114 &8367182306393518132 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5584877007519038261, guid: 36a7c8f6f08b8f34a858163e2bce1137, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3506232559562832078, guid: 36a7c8f6f08b8f34a858163e2bce1137, type: 3}
   m_PrefabInstance: {fileID: 4951303265898875130}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

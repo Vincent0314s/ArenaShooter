@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class PathObject : MonoBehaviour
 {
-    private MeshRenderer meshRenderer;
+    private MeshRenderer m_meshRenderer;
+    private MeshCollider m_meshCollider;
     public bool hasAlly;
 
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        m_meshRenderer = GetComponent<MeshRenderer>();
+        m_meshCollider = GetComponent<MeshCollider>();
     }
 
     public void ShowPath(bool _active) {
         if (hasAlly) { 
-            meshRenderer.enabled = false;
+            m_meshRenderer.enabled = false;
+            m_meshCollider.enabled = false;
             return;
         }
 
-        meshRenderer.enabled = _active;
+        m_meshRenderer.enabled = _active;
     }
 
     public void UpdatePath() {
-        meshRenderer.enabled = !hasAlly;
+        m_meshRenderer.enabled = !hasAlly;
+        m_meshCollider.enabled = !hasAlly;
     }
 }

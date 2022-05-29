@@ -7,7 +7,7 @@ public class AllyDetection : MonoBehaviour
     [SerializeField]
     private PathObject m_PathObject;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag.Equals(ConstStringCollection.ALLY)) {
             m_PathObject.hasAlly = true;

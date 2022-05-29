@@ -1,5 +1,6 @@
 public enum SceneInTheBuild 
 {
-	SampleScene,
+	MainMenu,
+	Game,
 
 }

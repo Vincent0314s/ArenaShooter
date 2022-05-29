@@ -10,7 +10,11 @@ public class PlayerInputController : MonoBehaviour
     private PlayerRayCastManager m_playerRayCastManager;
 
     private PlayerInputActions playerInputActions;
+
     private InputAction movement;
+    private InputAction rotateCamera;
+    private InputAction zoomCamera;
+
     private InputAction mouseLeftClick;
     private InputAction mouseRightClick;
 
@@ -23,8 +27,12 @@ public class PlayerInputController : MonoBehaviour
     private void OnEnable()
     {
         movement = playerInputActions.Player.Move;
+        rotateCamera = playerInputActions.Player.RotateCamera;
+        zoomCamera = playerInputActions.Player.ZoomCamera;
+
         mouseLeftClick = playerInputActions.Player.MouseLeftClick;
         mouseRightClick = playerInputActions.Player.MouseRightClick;
+
 
         mouseLeftClick.performed += m_placementManager.CreateAO;
         mouseLeftClick.started += m_playerRayCastManager.SelecteUnit;
@@ -40,5 +48,21 @@ public class PlayerInputController : MonoBehaviour
 
         mouseRightClick.performed -= m_playerRayCastManager.MoveUnitToPosition;
         playerInputActions.Player.Disable();
+    }
+
+    private void Update()
+    {
+    }
+
+    public Vector2 GetWASDMovementValue() {
+        return movement.ReadValue<Vector2>();
+    }
+
+    public float GetRotateCameraValue() {
+        return rotateCamera.ReadValue<Vector2>().x;
+    }
+
+    public float GetZoomCameraValue() {
+        return zoomCamera.ReadValue<Vector2>().y;
     }
 }

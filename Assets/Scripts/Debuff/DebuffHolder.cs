@@ -192,7 +192,7 @@ public class DebuffHolder : MonoBehaviour,IDebuff
                 }
                 else if (_second == Element.Ice)
                 {
-                    //Create Ice area,Enemy Slider forward
+                    //An area that add ice debuff
                     m_stateEffect.GenerateIceArea(this.transform);
                 }
                 break;
