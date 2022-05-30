@@ -45,3 +45,9 @@ public enum WalkablePath
 	Right,
 
 }
+public enum MainActor 
+{
+	Player,
+	Girl,
+
+}

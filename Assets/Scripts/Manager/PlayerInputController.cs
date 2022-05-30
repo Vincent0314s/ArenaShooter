@@ -24,10 +24,7 @@ public class PlayerInputController : MonoBehaviour
     private InputAction skill_2_Button;
     private InputAction skill_3_Button;
 
-
-    [Header("SkillMode")]
-    private InputAction skillLeftClick;
-    private InputAction skillRightClick;
+    private InputAction spaceKey;
 
     private void Awake()
     {
@@ -44,6 +41,9 @@ public class PlayerInputController : MonoBehaviour
         skill_1_Button = playerInputActions.Player.Skill_1;
         skill_2_Button = playerInputActions.Player.Skill_2;
         skill_3_Button = playerInputActions.Player.Skill_3;
+        spaceKey = playerInputActions.Player.SpaceKey;
+
+        spaceKey.performed += DialogueManager.instance.GoNextPage;
 
         mouseLeftClick = playerInputActions.Player.MouseLeftClick;
         mouseRightClick = playerInputActions.Player.MouseRightClick;
@@ -59,6 +59,8 @@ public class PlayerInputController : MonoBehaviour
     {
         mouseLeftClick.performed -= m_placementManager.CreateAO;
         mouseLeftClick.started -= m_playerRayCastManager.SelecteUnit;
+
+        spaceKey.performed -= DialogueManager.instance.GoNextPage;
 
         mouseRightClick.performed -= m_playerRayCastManager.MoveUnitToPosition;
         playerInputActions.Player.Disable();

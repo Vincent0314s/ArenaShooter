@@ -98,6 +98,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpaceKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6b61efa-aa1d-4529-ab4e-4c263e8ee038"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -296,6 +305,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Skill_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""411b5c7c-2ee6-4e70-8555-2ee18c0d1c01"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SpaceKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -816,54 +836,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""SkillMode"",
-            ""id"": ""fb062ff3-a39e-4887-9f12-a5b06adc6131"",
-            ""actions"": [
-                {
-                    ""name"": ""MouseLeftClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""29ecdf18-5f73-4894-a080-59fdeab5b5c2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseRightClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""aaad1513-ecb4-447b-9562-9ed56f7ed528"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""9cf4e3e1-a4c8-4df3-a39a-17eaf9ff2473"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""MouseLeftClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a6120587-dbd0-4805-9504-c9ac3d447197"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""MouseRightClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -939,6 +911,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Skill_1 = m_Player.FindAction("Skill_1", throwIfNotFound: true);
         m_Player_Skill_2 = m_Player.FindAction("Skill_2", throwIfNotFound: true);
         m_Player_Skill_3 = m_Player.FindAction("Skill_3", throwIfNotFound: true);
+        m_Player_SpaceKey = m_Player.FindAction("SpaceKey", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -951,10 +924,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-        // SkillMode
-        m_SkillMode = asset.FindActionMap("SkillMode", throwIfNotFound: true);
-        m_SkillMode_MouseLeftClick = m_SkillMode.FindAction("MouseLeftClick", throwIfNotFound: true);
-        m_SkillMode_MouseRightClick = m_SkillMode.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1022,6 +991,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Skill_1;
     private readonly InputAction m_Player_Skill_2;
     private readonly InputAction m_Player_Skill_3;
+    private readonly InputAction m_Player_SpaceKey;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1034,6 +1004,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Skill_1 => m_Wrapper.m_Player_Skill_1;
         public InputAction @Skill_2 => m_Wrapper.m_Player_Skill_2;
         public InputAction @Skill_3 => m_Wrapper.m_Player_Skill_3;
+        public InputAction @SpaceKey => m_Wrapper.m_Player_SpaceKey;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1067,6 +1038,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Skill_3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
                 @Skill_3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
                 @Skill_3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill_3;
+                @SpaceKey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpaceKey;
+                @SpaceKey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpaceKey;
+                @SpaceKey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpaceKey;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1095,6 +1069,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Skill_3.started += instance.OnSkill_3;
                 @Skill_3.performed += instance.OnSkill_3;
                 @Skill_3.canceled += instance.OnSkill_3;
+                @SpaceKey.started += instance.OnSpaceKey;
+                @SpaceKey.performed += instance.OnSpaceKey;
+                @SpaceKey.canceled += instance.OnSpaceKey;
             }
         }
     }
@@ -1204,47 +1181,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // SkillMode
-    private readonly InputActionMap m_SkillMode;
-    private ISkillModeActions m_SkillModeActionsCallbackInterface;
-    private readonly InputAction m_SkillMode_MouseLeftClick;
-    private readonly InputAction m_SkillMode_MouseRightClick;
-    public struct SkillModeActions
-    {
-        private @PlayerInputActions m_Wrapper;
-        public SkillModeActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseLeftClick => m_Wrapper.m_SkillMode_MouseLeftClick;
-        public InputAction @MouseRightClick => m_Wrapper.m_SkillMode_MouseRightClick;
-        public InputActionMap Get() { return m_Wrapper.m_SkillMode; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SkillModeActions set) { return set.Get(); }
-        public void SetCallbacks(ISkillModeActions instance)
-        {
-            if (m_Wrapper.m_SkillModeActionsCallbackInterface != null)
-            {
-                @MouseLeftClick.started -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
-                @MouseLeftClick.performed -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
-                @MouseLeftClick.canceled -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseLeftClick;
-                @MouseRightClick.started -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
-                @MouseRightClick.performed -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
-                @MouseRightClick.canceled -= m_Wrapper.m_SkillModeActionsCallbackInterface.OnMouseRightClick;
-            }
-            m_Wrapper.m_SkillModeActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @MouseLeftClick.started += instance.OnMouseLeftClick;
-                @MouseLeftClick.performed += instance.OnMouseLeftClick;
-                @MouseLeftClick.canceled += instance.OnMouseLeftClick;
-                @MouseRightClick.started += instance.OnMouseRightClick;
-                @MouseRightClick.performed += instance.OnMouseRightClick;
-                @MouseRightClick.canceled += instance.OnMouseRightClick;
-            }
-        }
-    }
-    public SkillModeActions @SkillMode => new SkillModeActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1300,6 +1236,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnSkill_1(InputAction.CallbackContext context);
         void OnSkill_2(InputAction.CallbackContext context);
         void OnSkill_3(InputAction.CallbackContext context);
+        void OnSpaceKey(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1313,10 +1250,5 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
-    }
-    public interface ISkillModeActions
-    {
-        void OnMouseLeftClick(InputAction.CallbackContext context);
-        void OnMouseRightClick(InputAction.CallbackContext context);
     }
 }

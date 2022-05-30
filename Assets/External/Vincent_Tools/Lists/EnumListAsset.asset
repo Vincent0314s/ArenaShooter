@@ -44,3 +44,7 @@ MonoBehaviour:
     enumVariable:
     - Left
     - Right
+  - name: MainActor
+    enumVariable:
+    - Player
+    - Girl
