@@ -7,7 +7,7 @@ public class DialogueContext : ScriptableObject
 {
     [System.Serializable]
     public struct Dialogue {
-        public MainActor speaker;
+        public MainActor actor;
         [TextArea(4,4)]
         public string context;
         public AudioClip voiceLine;

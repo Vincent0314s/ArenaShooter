@@ -1,7 +1,17 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
+    [System.Serializable]
+    public class ActorData {
+        public MainActor actor;
+        public Transform actorTransform;
+    }
+
+    public List<ActorData> actors = new List<ActorData>();
+
     public DialogueObject dialogueBox;
     private DialogueContext currentDialogueContext;
 
@@ -16,6 +26,7 @@ public class DialogueManager : Singleton<DialogueManager>
         ResetDialogueIndex();
         dialogueBox.ShowDialogueBox(true);
         dialogueBox.ReadText(GetContextFromDialoge());
+        SetDialoguePositionToAcotr();
     }
 
     private string GetContextFromDialoge() 
@@ -34,6 +45,7 @@ public class DialogueManager : Singleton<DialogueManager>
         if (!dialogueBox.CanGoNextPage())
             dialogueIndex += 1;
 
+        SetDialoguePositionToAcotr();
         dialogueBox.ReadText(GetContextFromDialoge());
     }
 
@@ -41,4 +53,14 @@ public class DialogueManager : Singleton<DialogueManager>
         dialogueIndex = 0;
     }
 
+    private void SetDialoguePositionToAcotr()
+    {
+        foreach (var speaker in actors)
+        {
+            if (speaker.actor.Equals(currentDialogueContext.dialogus[dialogueIndex].actor))
+            {
+                dialogueBox.SetPositionToActor(speaker.actorTransform);
+            }
+        }
+    }
 }

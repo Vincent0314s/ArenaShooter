@@ -3,9 +3,15 @@ using TMPro;
 
 public class DialogueObject : MonoBehaviour
 {
+
+    public float headHeight = 4;
+
+    [Header("Reference")]
     private SpriteRenderer dialogueBG;
     private TextMeshPro dialogueText;
     private TextMeshPro nextText;
+
+    private Transform currentActor;
     private int pageCount = 1;
 
     private void Awake()
@@ -19,11 +25,21 @@ public class DialogueObject : MonoBehaviour
         ShowDialogueBox(false);
     }
 
+    private void Update()
+    {
+        if (currentActor != null) { 
+            Vector3 headPosition = currentActor.position + Vector3.up * headHeight;
+            transform.position = headPosition;
+        }
+    }
+
     public void ShowDialogueBox(bool _activate) {
         dialogueBG.enabled = _activate;
         dialogueText.enabled = _activate;
         nextText.enabled = _activate;
         ResetPageCount();
+        if(!_activate)
+            currentActor = null;
     }
 
     public void ReadText(string _context) {
@@ -39,6 +55,11 @@ public class DialogueObject : MonoBehaviour
         }
         ResetPageCount();
         return false;
+    }
+
+    public void SetPositionToActor(Transform _actor)
+    {
+        currentActor = _actor;
     }
 
     private void ResetPageCount() {

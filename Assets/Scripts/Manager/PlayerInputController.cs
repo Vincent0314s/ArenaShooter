@@ -43,8 +43,6 @@ public class PlayerInputController : MonoBehaviour
         skill_3_Button = playerInputActions.Player.Skill_3;
         spaceKey = playerInputActions.Player.SpaceKey;
 
-        spaceKey.performed += DialogueManager.instance.GoNextPage;
-
         mouseLeftClick = playerInputActions.Player.MouseLeftClick;
         mouseRightClick = playerInputActions.Player.MouseRightClick;
 
@@ -53,6 +51,12 @@ public class PlayerInputController : MonoBehaviour
 
         mouseRightClick.performed += m_playerRayCastManager.MoveUnitToPosition;
         playerInputActions.Player.Enable();
+    }
+
+    private void Start()
+    {
+        //Wait for instance to create
+        spaceKey.performed += DialogueManager.instance.GoNextPage;
     }
 
     private void OnDisable()
