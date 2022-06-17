@@ -13,6 +13,8 @@ public class AllyDetection : MonoBehaviour
             m_PathObject.hasAlly = true;
         }
     }
+
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.tag.Equals(ConstStringCollection.ALLY))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using TMPro;
 
 public class SettingManager : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class SettingManager : MonoBehaviour
 
 
     [SerializeField][Header("Resolution Drop down menu")]
-    private Dropdown resolutionDisplay;
+    private TMP_Dropdown resolutionDisplay;
 
 
     [SerializeField][Header("Volume Slider")]
@@ -144,7 +145,6 @@ public class SettingManager : MonoBehaviour
         //    });
         //}
 
-
         resolutionDisplay.onValueChanged.AddListener(delegate
         {
             SetResolution(resolutionDisplay);
@@ -195,7 +195,7 @@ public class SettingManager : MonoBehaviour
 
 
 
-    public void SetResolution(Dropdown rsIndex)
+    public void SetResolution(TMP_Dropdown rsIndex)
     {
         Resolution rs = allResolutions[rsIndex.value];
         Screen.SetResolution(rs.width, rs.height, Screen.fullScreen);
