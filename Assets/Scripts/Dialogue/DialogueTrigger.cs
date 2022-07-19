@@ -11,6 +11,6 @@ public class DialogueTrigger : MonoBehaviour,IDialogueTrigger
             return;
         }
 
-        DialogueManager.instance.SetDialogueContext(dialogue);
+        DialogueManager.Instance.SetDialogueContext(dialogue);
     }
 }

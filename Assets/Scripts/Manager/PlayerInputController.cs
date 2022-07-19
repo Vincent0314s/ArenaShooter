@@ -56,7 +56,7 @@ public class PlayerInputController : MonoBehaviour
     private void Start()
     {
         //Wait for instance to create
-        spaceKey.performed += DialogueManager.instance.GoNextPage;
+        spaceKey.performed += DialogueManager.Instance.GoNextPage;
     }
 
     private void OnDisable()
@@ -64,7 +64,7 @@ public class PlayerInputController : MonoBehaviour
         mouseLeftClick.performed -= m_placementManager.CreateAO;
         mouseLeftClick.started -= m_playerRayCastManager.SelecteUnit;
 
-        spaceKey.performed -= DialogueManager.instance.GoNextPage;
+        spaceKey.performed -= DialogueManager.Instance.GoNextPage;
 
         mouseRightClick.performed -= m_playerRayCastManager.MoveUnitToPosition;
         playerInputActions.Player.Disable();
