@@ -6228,10 +6228,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridCol: 100
   gridRow: 100
-  gridOffset: {x: 1, y: 5, z: 1}
+  gridOffset: {x: 1, y: 3, z: 1}
   gap: 2
   dotRadius: 0.41
-  canVisualizeDots: 0
+  canVisualizeDots: 1
   allyPath_Left_Parent: {fileID: 483177712}
   allyPath_Right_Parent: {fileID: 1843394932}
 --- !u!4 &1209676168

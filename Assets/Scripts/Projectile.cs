@@ -59,5 +59,8 @@ public class Projectile : MonoBehaviour
             other.GetComponent<IDebuff>().AddDebuff(m_Projectile.element);
             transform.position = Vector3.zero;
         }
+        if (other.TryGetComponent(out IHurt _hurtScript)) {
+            _hurtScript.Hurt();
+        }
     }
 }
